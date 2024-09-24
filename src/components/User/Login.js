@@ -28,7 +28,7 @@ const Login = () => {
                 setErrorMessage('');
 
                 // posts 페이지로 이동
-                navigate('/users');
+                navigate('/posts');
             } else {
                 setErrorMessage('Login failed. Please try again.');
             }

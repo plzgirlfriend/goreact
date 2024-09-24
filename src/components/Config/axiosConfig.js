@@ -1,3 +1,11 @@
+/*
+
+기본 URL: Spring Server localhost/80800
+JSON type
+get Token(refreshToken 구현 x)
+
+ */
+
 import axios from "axios";
 
 const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN"); // 토큰을 로컬 스토리지에서 불러옴

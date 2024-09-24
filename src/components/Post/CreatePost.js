@@ -1,67 +1,78 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { TextField, Button, Box, Typography, Alert } from '@mui/material';
+// dto: String title, String content
+
+import React from 'react';
+import {useState} from 'react';
+import {axiosInstance} from "../Config/axiosConfig";
+import {Button, Container, TextField, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 const CreatePost = () => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const navigate = useNavigate();
 
-        try {
-            const response = await axios.post('http://localhost:8080/api/post',
-                { title, content },
-                {
-                    // session 인증
-                    withCredentials: true
-                });
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
 
-            setSuccessMessage('게시물이 성공적으로 작성되었습니다!');
-            setErrorMessage('');
-            setTitle('');
-            setContent('');
-        } catch (error) {
-            setErrorMessage('게시물 작성에 실패했습니다');
-            setSuccessMessage('');
-            console.error(error);
-        }
-    };
+    // 작성 버튼
+    const handleCreatePost = async () => {
 
+        // try {
+        //     // HTTP POST method, localhost:8080/api/post, dto: title, content
+        //     const response = await axiosInstance.post('/api/post', {
+        //         // dto
+        //         title,
+        //         content
+        //     });
+        //     // 전달 제대로 됐겠지?
+        //     console.log(response.data);
+        //
+        // } catch (error){
+        //
+        //     console.log("Error CreatePost: ", error);
+        // }
+
+        // HTTP Post method, localhost:8080/api/post, dto: title, content
+        await axiosInstance.post("/api/post", {
+            title,
+            content
+        }).then(response => {
+            // 제대로 전달 되었겠지?
+            console.log(response.data);
+            alert(`작성 완료`);
+            navigate(`/posts`);
+
+        }).catch(error => {
+            console.error("Error CreatePost: ", error);
+        });
+    }
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 500, mx: 'auto', mt: 5 }}>
-            <Typography variant="h4" align="center" gutterBottom>
-                Create New Post
+        <Container maxWidth="sm">
+            <Typography variant="h4" component="h2" gutterBottom>
+                Create Post
             </Typography>
-            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-            {successMessage && <Alert severity="success">{successMessage}</Alert>}
             <TextField
-                label="title"
+                label="Title"
                 variant="outlined"
                 fullWidth
-                required
+                margin="normal"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                sx={{ mb: 2 }}
             />
             <TextField
-                label="content"
+                label="Content"
                 variant="outlined"
                 fullWidth
-                required
+                margin="normal"
                 multiline
                 rows={4}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                sx={{ mb: 2 }}
             />
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-                Submit
+            <Button variant="contained" color="primary" onClick={handleCreatePost}>
+                Post 작성
             </Button>
-        </Box>
+        </Container>
     );
-};
+}
 
 export default CreatePost;
