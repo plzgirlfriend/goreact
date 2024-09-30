@@ -15,7 +15,7 @@ export const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${TOKEN_TYPE} ${ACCESS_TOKEN}`,
+        'Authorization': ACCESS_TOKEN ? `${TOKEN_TYPE} ${ACCESS_TOKEN}` : '',
     },
 });
 

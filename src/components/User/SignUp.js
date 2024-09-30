@@ -1,3 +1,9 @@
+/*
+
+Backend dto: String username, String password
+
+ */
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {axiosInstance} from "../Config/axiosConfig";
@@ -11,31 +17,50 @@ function SignUp() {
     const handleSignUp = async (e) => {
         e.preventDefault();
 
-        // axios로 UserController signup 사용
-        try {
-            const response = await axiosInstance.post('/api/signup', {
-                username,
-                password
-            });
+        // // axios로 UserController signup 사용
+        // try {
+        //     const response = await axiosInstance.post('/api/signup', {
+        //         username,
+        //         password
+        //     });
+        //
+        //     // 회원가입 성공했을 때
+        //     if (response.status === 200) {
+        //         setErrorMessage('');
+        //         alert('SignUp Success!');
+        //         navigate('/login');
+        //     }
+        // } catch (error) {
+        //     setErrorMessage('SignUp failed');
+        //     console.error('SignUp failed: ', error);
+        // }
 
-            // status == 200: 성공
-            if (response.status === 200) {
+        await axiosInstance.post(`/api/signup`,{
+            // username, password 를 받아옴
+            username,
+            password
+        })
+            .then(response => {
+
+                setUsername(response.data.username);
+                setPassword(response.data.password);
+
                 setErrorMessage('');
-                alert('SignUp Success!');
+                alert('회원가입에 성공했습니다!');
                 navigate('/login');
-            }
-        } catch (error) {
-            setErrorMessage('SignUp failed');
-            console.error('SignUp failed: ', error);
-        }
+            })
+            .catch(error => {
+                setErrorMessage('회원가입에 실패했습니다.');
+                console.error('회원가입에 실패했습니다. ', error);
+            })
     };
 
     return (
         <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', border: '1px solid #ccc', borderRadius: '10px' }}>
-            <h2>SignUp</h2>
+            <h2>회원가입</h2>
             <form onSubmit={handleSignUp}>
                 <div style={{ marginBottom: '10px' }}>
-                    <label>Username:</label>
+                    <label>아이디:</label>
                     <input
                         type="email"
                         value={username}
@@ -45,7 +70,7 @@ function SignUp() {
                     />
                 </div>
                 <div style={{ marginBottom: '10px' }}>
-                    <label>Password:</label>
+                    <label>비밀번호:</label>
                     <input
                         type="password"
                         value={password}
@@ -58,7 +83,7 @@ function SignUp() {
                     type="submit"
                     style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' }}
                 >
-                    SignUp
+                    회원가입
                 </button>
             </form>
             {errorMessage && <p style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>}

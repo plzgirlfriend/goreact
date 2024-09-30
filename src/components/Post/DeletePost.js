@@ -9,22 +9,23 @@ const DeletePost = ({postId, onDelete}) => {
 
     const handleOnDelete = async () => {
 
-        // HTTP DELETE method, localhost:8080/api/delete-post/${postId}
         await axiosInstance.delete(`/api/delete-post/${postId}`)
             .then(() => {
 
                 onDelete(postId);
-                alert(`Delete Success: ${postId}`);
+                alert(`게시글 삭제 성공`);
                 console.log(postId);
             })
             .catch(error => {
 
+                alert(`게시글 삭제 실패`);
                 console.log("Error DeletePost: ", error);
             });
     }
 
     return (
-        <IconButton onClick={handleOnDelete} color="error" aria-label="delete">
+        // mui DeleteButton
+        <IconButton variant="contained" color="error" onClick={handleOnDelete} aria-label="delete">
             <DeleteIcon />
         </IconButton>
     );

@@ -1,4 +1,8 @@
-// dto: String title, String content
+/*
+
+Backend dto: String title, String content
+
+ */
 
 import React from 'react';
 import {useState} from 'react';
@@ -36,22 +40,23 @@ const CreatePost = () => {
             title,
             content
         }).then(response => {
+
+            alert(`게시글 작성 완료`);
+            navigate(`/posts`);
             // 제대로 전달 되었겠지?
             console.log(response.data);
-            alert(`작성 완료`);
-            navigate(`/posts`);
 
         }).catch(error => {
-            console.error("Error CreatePost: ", error);
+            console.error("게시글 생성 실패: ", error);
         });
     }
     return (
         <Container maxWidth="sm">
             <Typography variant="h4" component="h2" gutterBottom>
-                Create Post
+                게시글 작성
             </Typography>
             <TextField
-                label="Title"
+                label="제목"
                 variant="outlined"
                 fullWidth
                 margin="normal"
@@ -59,7 +64,7 @@ const CreatePost = () => {
                 onChange={(e) => setTitle(e.target.value)}
             />
             <TextField
-                label="Content"
+                label="내용"
                 variant="outlined"
                 fullWidth
                 margin="normal"
